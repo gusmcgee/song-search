@@ -1,0 +1,39 @@
+# Ignore song files (do not track raw song/audio files)
+/song-files/
+
+# Optionally ignore any wav files in the repo root or elsewhere if you prefer
+# Uncomment the next line to ignore all .wav files
+# *.wav
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+.env
+
+# macOS
+.DS_Store
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# Test / coverage
+.coverage
+.pytest_cache/
+
+# Logs
+*.log
+
+# Build/dist
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.swp
