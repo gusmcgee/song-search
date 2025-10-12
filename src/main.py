@@ -1,96 +1,67 @@
 import librosa
+from song_search import SongSearch
 from preprocess import normalize
 from spectrogram import create_spectrogram
 from extract_maxima import extract_local_maxima
 from plot import plot
-from dbm import DBM
-
-desired_sample_rate = 22050
-hop_length = 256
-box_height_hz = 30
-box_width_hops = 50
-n_fft = 4096
-duration = None
-offset = 0.0
-plot_width = 13
-plot_height = 8
-fan_value = 5
-target_zone = 50
-
-dbm = DBM()
+import sys
+import soundfile as sf
 
 
-def add_song(path, name):
-    dbm.add_song(
-        path,
-        name,
-        desired_sample_rate=desired_sample_rate,
-        hop_length=hop_length,
-        box_height_hz=box_height_hz,
-        box_width_hops=box_width_hops,
-        n_fft=n_fft,
-        duration=duration,
-        offset=offset,
-        fan_value=fan_value,
-        target_zone=target_zone,
+song_search = SongSearch()
+
+
+def plotSpectrogram():
+    signal, sample_rate = librosa.load(
+        "song-files/sound-like-radio.wav",
+        sr=song_search.desired_sample_rate,
+        mono=True,
+        duration=song_search.duration,
+        offset=song_search.offset,
+    )
+    signal = normalize(signal, sample_rate)
+
+    spectrogram = create_spectrogram(
+        signal, sample_rate, hop_length=song_search.hop_length, n_fft=song_search.n_fft
+    )
+    local_maxima = extract_local_maxima(
+        spectrogram,
+        box_height_hz=song_search.box_height_hz,
+        box_width_hops=song_search.box_width_hops,
+    )
+
+    plot(
+        spectrogram,
+        local_maxima,
+        sample_rate,
+        song_search.hop_length,
+        song_search.n_fft,
+        plot_width=song_search.plot_width,
+        plot_height=song_search.plot_height,
     )
 
 
-def search_song(path):
-    return dbm.search_song(
-        path,
-        desired_sample_rate=desired_sample_rate,
-        hop_length=hop_length,
-        box_height_hz=box_height_hz,
-        box_width_hops=box_width_hops,
-        n_fft=n_fft,
-        fan_value=fan_value,
-        target_zone=target_zone,
-    )
+def save_processed_audio(path, subtype="PCM_16"):
+    sf.write(path, song_search.samples, song_search.new_rate, subtype=subtype)
 
 
 def main():
-    add_song("song-files/sound-like-radio.wav", "sound like radio bruh")
-    add_song("song-files/Angst-INZO.wav", "angst")
-    add_song(
-        "song-files/Good Times & Tan Lines - Zach Top.wav", "Good Times & Tan Lines"
-    )
 
-    result = search_song("song-files/live_radio.wav")
+    args = []
+    if len(sys.argv) > 1:
+        args = sys.argv[1:]
 
-    print(result)
+    for path in args:
+        file_name = path.split("/")[-1]
+        song_name = file_name.split(".")[0]
+        file_type = file_name.split(".")[1]
 
-    # Plot graph
-    # signal, sample_rate = librosa.load(
-    #     "song-files/sound-like-radio.wav",
-    #     sr=desired_sample_rate,
-    #     mono=True,
-    #     duration=duration,
-    #     offset=offset,
-    # )
-    # signal = normalize(signal, sample_rate)
+        if file_type == "wav":
+            print("Adding:", file_name)
+            song_search.add_song(path, song_name)
 
-    # spectrogram = create_spectrogram(
-    #     signal, sample_rate, hop_length=hop_length, n_fft=n_fft
-    # )
-    # local_maxima = extract_local_maxima(
-    #     spectrogram, box_height_hz=box_height_hz, box_width_hops=box_width_hops
-    # )
-
-    # plot(
-    #     spectrogram,
-    #     local_maxima,
-    #     sample_rate,
-    #     hop_length,
-    #     n_fft,
-    #     plot_width=plot_width,
-    #     plot_height=plot_height,
-    # )
-
-    # Save processed audio
-    # # 2. Save as 16-bit PCM WAV
-    # import soundfile as sf
-    # sf.write("output8.wav", samples, new_rate, subtype="PCM_16")
+    result = song_search.search_song("live-song-snippets/live_radio.wav")
+    print(result[:5])
 
 
 if __name__ == "__main__":
