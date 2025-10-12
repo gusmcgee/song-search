@@ -1,19 +1,19 @@
 import librosa
 from song_search import SongSearch
 from preprocess import normalize
-from spectrogram import create_spectrogram
 from extract_maxima import extract_local_maxima
 from plot import plot
 from pathlib import Path
+import numpy as np
 import soundfile as sf
 
 
 song_search = SongSearch()
 
 
-def plotSpectrogram():
+def plotSpectrogram(path):
     signal, sample_rate = librosa.load(
-        "song-files/sound-like-radio.wav",
+        path,
         sr=song_search.desired_sample_rate,
         mono=True,
         duration=song_search.duration,
@@ -21,9 +21,10 @@ def plotSpectrogram():
     )
     signal = normalize(signal, sample_rate)
 
-    spectrogram = create_spectrogram(
-        signal, sample_rate, hop_length=song_search.hop_length, n_fft=song_search.n_fft
+    spectrogram = np.abs(
+        librosa.stft(signal, n_fft=song_search.n_fft, hop_length=song_search.hop_length)
     )
+
     local_maxima = extract_local_maxima(
         spectrogram,
         box_height_hz=song_search.box_height_hz,

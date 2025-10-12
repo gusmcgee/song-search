@@ -19,7 +19,7 @@ def normalize(signal, sample_rate, target_rms=0.2):
     # Apply root mean square normalizaiton
     rms = np.sqrt(np.mean(signal**2))
     # Scale signal
-    signal = signal * (target_rms / (rms + 1e-8))
+    signal = signal * (target_rms / rms)
 
     # Clip big values
     signal = np.clip(signal, -1.0, 1.0)
