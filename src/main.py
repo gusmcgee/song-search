@@ -4,7 +4,7 @@ from preprocess import normalize
 from spectrogram import create_spectrogram
 from extract_maxima import extract_local_maxima
 from plot import plot
-import sys
+from pathlib import Path
 import soundfile as sf
 
 
@@ -46,22 +46,29 @@ def save_processed_audio(path, subtype="PCM_16"):
 
 
 def main():
+    # Load songs from song-files
+    song_files_path = Path("song-files")
+    song_files = [f for f in song_files_path.iterdir() if f.is_file()]
 
-    args = []
-    if len(sys.argv) > 1:
-        args = sys.argv[1:]
+    for file_path in song_files:
+        song_name = file_path.stem
+        file_type = file_path.suffix
 
-    for path in args:
-        file_name = path.split("/")[-1]
-        song_name = file_name.split(".")[0]
-        file_type = file_name.split(".")[1]
+        if file_type == ".wav":
+            print("Adding:", str(file_path))
+            song_search.add_song(file_path, song_name)
 
-        if file_type == "wav":
-            print("Adding:", file_name)
-            song_search.add_song(path, song_name)
+    # Match songs from live-song-snippets to songs in song-files
+    snippet_path = Path("live-song-snippets")
+    snippet_files = [f for f in snippet_path.iterdir() if f.is_file()]
+    for file_path in snippet_files:
+        song_name = file_path.stem
+        file_type = file_path.suffix
 
-    result = song_search.search_song("live-song-snippets/live_radio.wav")
-    print(result[:5])
+        if file_type == ".wav":
+            snippet_name = file_path.stem
+            result = song_search.search_song(file_path)
+            print(snippet_name, "matches to...", result[:5])
 
 
 if __name__ == "__main__":
