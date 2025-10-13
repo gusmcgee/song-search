@@ -16,5 +16,10 @@ In the project root, run the following command:
 ```bash
 python src/main.py
 ```
-
 For each audio snippet in ```live-song-snippets```, the program outputs the snippet’s name and its five closest matches in ```song-files```, ranked in descending order. Each match is accompanied by the number of matching hashes between the snippet and the corresponding audio file.
+
+### Visual
+
+<img src="spectrograms/pure-Infidelitorium6-21.png" alt="Visualization of a spectrogram used to fingerprint a song." style="max-width:600px;">
+
+**Visualization:** Spectrogram used to fingerprint a song.
