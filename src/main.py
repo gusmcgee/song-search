@@ -10,13 +10,19 @@ import numpy as np
 song_search = SongSearch()
 
 
-def plotSpectrogram(path):
+def plot_spectrogram(
+    path,
+    duration=song_search.duration,
+    offset=song_search.offset,
+    plot_width=10,
+    plot_height=7,
+):
     signal, sample_rate = librosa.load(
         path,
         sr=song_search.desired_sample_rate,
         mono=True,
-        duration=song_search.duration,
-        offset=song_search.offset,
+        duration=duration,
+        offset=offset,
     )
     signal = normalize(signal, sample_rate)
 
@@ -36,8 +42,8 @@ def plotSpectrogram(path):
         sample_rate,
         song_search.hop_length,
         song_search.n_fft,
-        plot_width=song_search.plot_width,
-        plot_height=song_search.plot_height,
+        plot_width=plot_width,
+        plot_height=plot_height,
     )
 
 
@@ -69,32 +75,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# Code for creating a spectrogram visualization
-# import librosa
-# from song_search import create_spectrogram
-
-# n_fft = 2048
-# hop_length = 512
-# signal, sample_rate = librosa.load(
-#     "song-files/Infidelitorium.wav",
-#     sr=song_search.desired_sample_rate,
-#     mono=True,
-#     duration=15,
-#     offset=6,
-# )
-# signal = normalize(signal, sample_rate)
-# spectrogram = create_spectrogram(signal, n_fft, hop_length)
-
-# local_maxima = extract_local_maxima(
-#     spectrogram,
-#     box_height_hz=song_search.box_height_hz,
-#     box_width_hops=song_search.box_width_hops,
-# )
-# plot(
-#     spectrogram,
-#     local_maxima,
-#     sample_rate,
-#     hop_length,
-#     n_fft,
-# )
