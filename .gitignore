@@ -1,10 +1,5 @@
-# Ignore song files (do not track raw song/audio files)
-song-files/*
-live-song-snippets/*
-
-# Optionally ignore any wav files in the repo root or elsewhere if you prefer
-# Uncomment the next line to ignore all .wav files
-# *.wav
+# Ignore audio files
+*.wav
 
 # Python
 __pycache__/

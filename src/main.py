@@ -5,7 +5,6 @@ from extract_maxima import extract_local_maxima
 from plot import plot
 from pathlib import Path
 import numpy as np
-import soundfile as sf
 
 
 song_search = SongSearch()
@@ -42,10 +41,6 @@ def plotSpectrogram(path):
     )
 
 
-def save_processed_audio(path, subtype="PCM_16"):
-    sf.write(path, song_search.samples, song_search.new_rate, subtype=subtype)
-
-
 def main():
     # Load songs from song-files
     song_files_path = Path("song-files")
@@ -69,7 +64,7 @@ def main():
         if file_type == ".wav":
             snippet_name = file_path.stem
             result = song_search.search_song(file_path)
-            print(snippet_name, "matches to...", result[:5])
+            print(snippet_name, "matches to...", result[:min(5, len(result))], "\n")
 
 
 if __name__ == "__main__":
