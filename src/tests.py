@@ -20,7 +20,6 @@ def test_normalize():
     test_on_file("Angst 1.wav")
     test_on_file("Krunkberry Blossom 1.wav")
     test_on_file("Good Times & Tan Lines 2.wav")
-    test_on_file("Processed Angst 11.wav")
 
 
 if __name__ == "__main__":

@@ -5,11 +5,11 @@ A system that identifies which song is playing from a short recorded audio snipp
 ### Project Setup
 In the project root, run the following commands:
 ```bash
-mkdir song-files          # stores pre-recorded reference songs of type .wav
-mkdir live-song-snippets  # stores short recorded clips to be matched of type .wav
-
-python -m pip install -r requirements.txt # Install requirements
+mkdir song-files live-song-snippets
+python -m pip install -r requirements.txt
 ```
+```song-files``` stores pre-recorded reference songs and ```live-song-snippets``` stores short recorded clips to be matched to songs in ```song-files```. These audio files should use the .wav file type.
+
 
 ### Usage
 In the project root, run the following command:
