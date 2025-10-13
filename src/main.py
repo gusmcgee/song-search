@@ -64,8 +64,37 @@ def main():
         if file_type == ".wav":
             snippet_name = file_path.stem
             result = song_search.search_song(file_path)
-            print(snippet_name, "matches to...", result[:min(5, len(result))], "\n")
+            print(snippet_name, "matches to...", result[: min(5, len(result))], "\n")
 
 
 if __name__ == "__main__":
     main()
+
+# Code for creating a spectrogram visualization
+# import librosa
+# from song_search import create_spectrogram
+
+# n_fft = 2048
+# hop_length = 512
+# signal, sample_rate = librosa.load(
+#     "song-files/Infidelitorium.wav",
+#     sr=song_search.desired_sample_rate,
+#     mono=True,
+#     duration=15,
+#     offset=6,
+# )
+# signal = normalize(signal, sample_rate)
+# spectrogram = create_spectrogram(signal, n_fft, hop_length)
+
+# local_maxima = extract_local_maxima(
+#     spectrogram,
+#     box_height_hz=song_search.box_height_hz,
+#     box_width_hops=song_search.box_width_hops,
+# )
+# plot(
+#     spectrogram,
+#     local_maxima,
+#     sample_rate,
+#     hop_length,
+#     n_fft,
+# )

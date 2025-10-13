@@ -10,8 +10,8 @@ def plot(
     sample_rate,
     hop_length,
     n_fft,
-    plot_width=15,
-    plot_height=10,
+    plot_width=10,
+    plot_height=7,
 ):
 
     spectrogram_db = librosa.amplitude_to_db(spectrogram)
