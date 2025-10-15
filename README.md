@@ -6,7 +6,7 @@ A system that identifies which song is playing from a short recorded audio snipp
 In the project root, run the following commands:
 ```bash
 mkdir song-files live-song-snippets
-python -m pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 ```song-files``` stores pre-recorded reference songs and ```live-song-snippets``` stores short recorded clips to be matched to songs in ```song-files```. These audio files should use the .wav file type.
 
@@ -14,7 +14,7 @@ python -m pip install -r requirements.txt
 ### Usage
 In the project root, run the following command:
 ```bash
-python src/main.py
+python3 src/main.py
 ```
 For each audio snippet in ```live-song-snippets```, the program outputs the snippet’s name and its five closest matches in ```song-files```, ranked in descending order. Each match is accompanied by the number of matching hashes between the snippet and the corresponding audio file.
 
